@@ -628,7 +628,8 @@ INFORMATION;
 				'allow_admin_mails'		=> ( $row['user_allow_massemail'] ) ? TRUE : FALSE,
 				'members_disable_pm'	=> ( $row['user_allow_pm'] ) ? 0 : 1,
 				'member_posts'			=> $row['user_posts'],
-				'member_last_post'		=> $row['user_lastpost_time']
+				'member_last_post'		=> $row['user_lastpost_time'],
+				'signature'				=> $this->fixPostData($row['user_sig'])
 			);
 			
 			/* Profile Photos */
