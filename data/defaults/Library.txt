@@ -1,0 +1,75 @@
+<?php
+
+/**
+ * @brief		Converter Library <#CLASS#> Class
+ * @author		<a href='http://www.invisionpower.com'>Invision Power Services, Inc.</a>
+ * @copyright	(c) 2001 - 2016 Invision Power Services, Inc.
+ * @package		IPS Community Suite
+ * @subpackage	Converter
+ * @since		21 Jan 2015
+ * @todo IPS4 has a concept of "everything centralized" whereas most other software do not - we will need to cover that for things like Moderators and Edit History.
+ */
+
+namespace IPS\convert\Library;
+
+/* To prevent PHP errors (extending class does not exist) revealing path */
+if ( !defined( '\IPS\SUITE_UNIQUE_KEY' ) )
+{
+	header( ( isset( $_SERVER['SERVER_PROTOCOL'] ) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0' ) . ' 403 Forbidden' );
+	exit;
+}
+
+class _<#CLASS#> extends \IPS\convert\Library
+{
+	/**
+	 * @brief	Application
+	 */
+	public $app = '<#CLASS_LOWER#>';
+	
+	/**
+	 * Returns a block of text, or a language string, that explains what the admin must do to complete this conversion
+	 *
+	 * @return	string
+	 * @todo
+	 */
+	public function getPostConversionInformation()
+	{
+		return "";
+	}
+	
+	/**
+	 * Returns an array of items that we can convert, including the amount of rows stored in the Community Suite as well as the recommend value of rows to convert per cycle
+	 *
+	 * @return	array
+	 * @todo Make sure the order of these makes sense.
+	 */
+	public function menuRows()
+	{
+		return array();
+	}
+	
+	/**
+	 * Returns an array of tables that need to be truncated when Empty Local Data is used
+	 *
+	 * @param	string	The method to truncate.
+	 * @return	array
+	 */
+	protected function truncate( $method )
+	{
+		return array();
+	}
+	
+	/**
+	 * This is how the insert methods will work - basically like 3.x, but we should be using the actual classes to insert the data unless there is a real world reason not too.
+	 * Using the actual routines to insert data will help to avoid having to resynchronize and rebuild things later on, thus resulting in less conversion time being needed overall.
+	 * Anything that parses content, for example, may need to simply insert directly then rebuild via a task over time, as HTML Purifier is slow when mass inserting content.
+	 */
+	
+	/**
+	 * A note on logging -
+	 * If the data is missing and it is unlikely that any source software would be able to provide this, we do not need to log anything and can use default data (for example, group_layout in convert_leader_groups).
+	 * If the data is missing and it is likely that a majority of the source software can provide this, we should log a NOTICE and use default data (for example, a_casesensitive in convert_acronyms).
+	 * If the data is missing and it is required to convert the item, we should log a WARNING and return FALSE.
+	 * If the conversion absolutely cannot proceed at all (filestorage locations not writable, for example), then we should log an ERROR and throw an \IPS\convert\Exception to completely halt the process and redirect to an error screen showing the last logged error.
+	 */
+}

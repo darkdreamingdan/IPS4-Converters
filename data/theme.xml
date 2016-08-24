@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<theme name="Default" author_name="Invision Power Services, Inc" author_url="http://www.invisionpower.com">
+ <template template_group="forms" template_name="settingsToConvert" template_data="$settingsToConvert" template_location="admin" template_app="convert"><![CDATA[
+<div class='ipsMessage ipsMessage_info'>{lang="converting_settings_desc"}</div>
+<ul class='ipsPad'>
+	{{foreach $settingsToConvert AS $setting}}
+		<li><em>{$setting['title']}</em> {lang="to"} <em>{$setting['our_title']}</em>: {$setting['value']}</li>
+	{{endforeach}}
+</ul>]]></template>
+ <template template_group="table" template_name="convertMenuRow" template_data="$table, $headers, $rows" template_location="admin" template_app="convert"><![CDATA[{{$softwareClass = $table->extra['softwareClass'];}}
+{{foreach $rows as $r}}
+	<form action='{url="app=convert&module=manage&controller=convert&do=runStep&id={$table->extra['appClass']->app_id}&method={$r['step_method']}"}' method='post' data-controller='convert.admin.convert.menu'>
+		<tr class='ipsClearfix' data-keyNavBlock>
+			{{foreach $r as $k => $v}}
+				{{if $k === 'per_cycle'}}
+					<td>
+						<input type='text' name='per_cycle' value='{$v|raw}' size='5' style='width:25%'><br>
+					</td>
+				{{elseif $k === 'empty_local_data'}}
+					<td>
+						<input type='checkbox' name='empty_local_data' id='empty_local_data_{$r['step_method']}' value='1' /> <label for='empty_local_data_{$r['step_method']}'>{lang="empty_local_data"}</label>
+					</td>
+				{{elseif $k === 'step_method'}}
+					<td>
+						{{if in_array( $r['step_method'], $table->extra['sessionData']['completed'] )}}
+							<input class='ipsButton ipsButton_normal ipsButton_verySmall' type='submit' name='submit' value='Convert Again' />
+							{{if \IPS\IN_DEV == TRUE}}
+								<a href='{url="app=convert&module=manage&controller=convert&do=emptyData&id={$table->extra['appClass']->app_id}&method={$r['step_method']}"}' class='ipsButton ipsButton_normal ipsButton_verySmall ipsButton_alternate' data-action='remove_converted_data'>{lang="remove_converted_data"}</a>
+							{{endif}}
+							{{if in_array( $r['step_method'], $softwareClass::checkConf() )}}
+								<br><input type='checkbox' name='reconfigure' id='reconfigure_{$r['step_method']}' value='1' /> <label for='reconfigure_{$r['step_method']}'>{lang="reconfigure"}</label>
+							{{endif}}
+						{{elseif count( array_filter( $table->extra['menuRows'][$r['step_method']]['dependencies'], array( $table->extra['appClass'], 'dependencies' ) ) )}}
+							<a href='#' class='ipsButton ipsButton_normal ipsButton_disabled ipsButton_verySmall' data-ipsTooltip title='{lang="cannot_convert_desc"}'>{lang="cannot_convert"}</a>
+						{{else}}
+							<input class='ipsButton ipsButton_normal ipsButton_verySmall' type='submit' name='submit' value='Begin Conversion' />
+						{{endif}}
+						<div id='elReconvertForm_{$v}' class='ipsPad ipsHide'>
+							Are you sure you wish to convert again? If you reconvert this step, then you MUST also reconvert the following steps.<br>
+							<ul>
+								{{foreach $table->extra['menuRows'] AS $step}}
+									{{if in_array( $r['step_method'], $step['dependencies'] )}}
+										<li>{lang="$step['step_method']"}</li>
+									{{endif}}
+								{{endforeach}}
+							</ul><br>
+							<input type='submit' class='ipsButton' name='submit' value='Reconvert' />
+						</div>
+					</td>
+				{{else}}
+					<td class='{{if $k === 'photo'}}ipsTable_icon{{endif}} {{if $k === $table->mainColumn}}ipsTable_primary ipsType_break{{endif}} {{if $k === '_buttons'}}ipsTable_controls{{endif}}' {{if $k !== $table->mainColumn && $k !== '_buttons' && $k !== 'photo'}}data-title="{lang="{$table->langPrefix}{$k}"}"{{endif}}>
+						{{if $k === '_buttons'}}
+							{template="controlStrip" params="$v" group="global" app="core"}
+						{{else}}
+							{$v|raw}
+						{{endif}}
+					</td>
+				{{endif}}
+			{{endforeach}}
+		</tr>
+	</form>
+{{endforeach}}]]></template>
+ <template template_group="table" template_name="postConversionInformation" template_data="$info" template_location="admin" template_app="convert"><![CDATA[
+<div class='ipsMessage ipsMessage_info'>
+	{$info|raw}
+</div>]]></template>
+ <template template_group="table" template_name="settingsMessage" template_data="$app" template_location="admin" template_app="convert"><![CDATA[{{$url = \IPS\Http\Url::internal( "app=convert&module=manage&controller=convert&do=settings&id={$app->app_id}" );}}
+<div class='ipsMessage ipsMessage_info'>
+	{lang="converter_supports_settings" sprintf="$url"}
+</div>]]></template>
+</theme>

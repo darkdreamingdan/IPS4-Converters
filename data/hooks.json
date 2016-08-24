@@ -1,0 +1,10 @@
+{
+    "Db": {
+        "type": "C",
+        "class": "\\IPS\\Db"
+    },
+    "Login": {
+        "type": "C",
+        "class": "\\IPS\\Login\\Convert"
+    }
+}

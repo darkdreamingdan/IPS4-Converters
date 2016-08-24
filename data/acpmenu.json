@@ -1,0 +1,16 @@
+{
+    "manage": {
+        "manage_start": {
+            "tab": "core",
+            "controller": "create",
+            "do": "&_new=1",
+            "restriction": "manage_create"
+        },
+        "manage": {
+            "tab": "core",
+            "controller": "manage",
+            "do": "",
+            "restriction": "manage_manage"
+        }
+    }
+}

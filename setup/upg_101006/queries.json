@@ -1,0 +1,369 @@
+{
+    "1": {
+        "method": "changeColumn",
+        "params": [
+            "convert_link_posts",
+            "foreign_id",
+            {
+                "name": "foreign_id",
+                "type": "VARCHAR",
+                "length": 255,
+                "decimals": null,
+                "values": [],
+                "allow_null": false,
+                "default": "",
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
+    },
+    "2": {
+        "method": "changeColumn",
+        "params": [
+            "convert_link_pms",
+            "foreign_id",
+            {
+                "name": "foreign_id",
+                "type": "VARCHAR",
+                "length": 255,
+                "decimals": null,
+                "values": [],
+                "allow_null": false,
+                "default": "",
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
+    },
+    "3": {
+        "method": "changeColumn",
+        "params": [
+            "convert_link_topics",
+            "foreign_id",
+            {
+                "name": "foreign_id",
+                "type": "VARCHAR",
+                "length": 255,
+                "decimals": null,
+                "values": [],
+                "allow_null": false,
+                "default": "",
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
+    },
+    "4": {
+        "method": "addIndex",
+        "params": [
+            "convert_link_posts",
+            {
+                "type": "key",
+                "name": "local_lookup",
+                "columns": [
+                    "ipb_id",
+                    "type",
+                    "app"
+                ],
+                "length": [
+                    null,
+                    null,
+                    null
+                ]
+            }
+        ]
+    },
+    "5": {
+        "method": "changeIndex",
+        "params": [
+            "convert_link_posts",
+            "ipb_id",
+            {
+                "type": "key",
+                "name": "ipb_id",
+                "columns": [
+                    "ipb_id"
+                ],
+                "length": [
+                    null
+                ]
+            }
+        ]
+    },
+    "6": {
+        "method": "dropIndex",
+        "params": [
+            "convert_link_posts",
+            "ipb_id"
+        ]
+    },
+    "7": {
+        "method": "dropIndex",
+        "params": [
+            "convert_link_posts",
+            "type"
+        ]
+    },
+    "8": {
+        "method": "dropIndex",
+        "params": [
+            "convert_link_topics",
+            "ipb_id"
+        ]
+    },
+    "9": {
+        "method": "dropIndex",
+        "params": [
+            "convert_link_topics",
+            "type"
+        ]
+    },
+    "10": {
+        "method": "addIndex",
+        "params": [
+            "convert_link_topics",
+            {
+                "type": "key",
+                "name": "local_lookup",
+                "columns": [
+                    "ipb_id",
+                    "type",
+                    "app"
+                ],
+                "length": [
+                    null,
+                    null,
+                    null
+                ]
+            }
+        ]
+    },
+    "11": {
+        "method": "dropIndex",
+        "params": [
+            "convert_link_pms",
+            "ipb_id"
+        ]
+    },
+    "12": {
+        "method": "dropIndex",
+        "params": [
+            "convert_link_pms",
+            "type"
+        ]
+    },
+    "13": {
+        "method": "addIndex",
+        "params": [
+            "convert_link_pms",
+            {
+                "type": "key",
+                "name": "local_lookup",
+                "columns": [
+                    "ipb_id",
+                    "type",
+                    "app"
+                ],
+                "length": [
+                    null,
+                    null,
+                    null
+                ]
+            }
+        ]
+    },
+    "14": {
+        "method": "dropIndex",
+        "params": [
+            "convert_link",
+            "foreign_id"
+        ]
+    },
+    "15": {
+        "method": "dropIndex",
+        "params": [
+            "convert_link",
+            "ipb_id"
+        ]
+    },
+    "16": {
+        "method": "dropIndex",
+        "params": [
+            "convert_link",
+            "type"
+        ]
+    },
+    "17": {
+        "method": "addIndex",
+        "params": [
+            "convert_link",
+            {
+                "type": "key",
+                "name": "foreign_id",
+                "columns": [
+                    "foreign_id"
+                ],
+                "length": [
+                    250
+                ]
+            }
+        ]
+    },
+    "18": {
+        "method": "addIndex",
+        "params": [
+            "convert_link",
+            {
+                "type": "key",
+                "name": "local_lookup",
+                "columns": [
+                    "ipb_id",
+                    "type",
+                    "app"
+                ],
+                "length": [
+                    null,
+                    null,
+                    null
+                ]
+            }
+        ]
+    },
+    "19": {
+        "method": "addIndex",
+        "params": [
+            "convert_link",
+            {
+                "type": "key",
+                "name": "type",
+                "columns": [
+                    "type"
+                ],
+                "length": [
+                    null
+                ]
+            }
+        ]
+    },
+    "20": {
+        "method": "addIndex",
+        "params": [
+            "convert_link",
+            {
+                "type": "key",
+                "name": "app",
+                "columns": [
+                    "app"
+                ],
+                "length": [
+                    null
+                ]
+            }
+        ]
+    },
+    "21": {
+        "method": "addIndex",
+        "params": [
+            "convert_link_pms",
+            {
+                "type": "key",
+                "name": "type",
+                "columns": [
+                    "type"
+                ],
+                "length": [
+                    null
+                ]
+            }
+        ]
+    },
+    "22": {
+        "method": "addIndex",
+        "params": [
+            "convert_link_pms",
+            {
+                "type": "key",
+                "name": "app",
+                "columns": [
+                    "app"
+                ],
+                "length": [
+                    null
+                ]
+            }
+        ]
+    },
+    "23": {
+        "method": "addIndex",
+        "params": [
+            "convert_link_posts",
+            {
+                "type": "key",
+                "name": "type",
+                "columns": [
+                    "type"
+                ],
+                "length": [
+                    null
+                ]
+            }
+        ]
+    },
+    "24": {
+        "method": "addIndex",
+        "params": [
+            "convert_link_posts",
+            {
+                "type": "key",
+                "name": "app",
+                "columns": [
+                    "app"
+                ],
+                "length": [
+                    null
+                ]
+            }
+        ]
+    },
+    "25": {
+        "method": "addIndex",
+        "params": [
+            "convert_link_topics",
+            {
+                "type": "key",
+                "name": "type",
+                "columns": [
+                    "type"
+                ],
+                "length": [
+                    null
+                ]
+            }
+        ]
+    },
+    "26": {
+        "method": "addIndex",
+        "params": [
+            "convert_link_topics",
+            {
+                "type": "key",
+                "name": "app",
+                "columns": [
+                    "app"
+                ],
+                "length": [
+                    null
+                ]
+            }
+        ]
+    }
+}
