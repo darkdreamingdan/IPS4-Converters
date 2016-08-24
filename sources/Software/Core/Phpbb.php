@@ -914,14 +914,31 @@ INFORMATION;
 				'map_last_topic_reply'	=> $row['message_time'],
 			);
 			
-			/* Now everyone else */
-			foreach( $this->db->select( '*', 'privmsgs_to', array( "msg_id=?", $row['msg_id'] ) ) AS $to )
+			/* Parse the to_address field for missing recipients of PMs in stores folders*/
+			foreach( explode ( ":", $row['to_address']) AS $toString )
 			{
-				$maps[$to['user_id']] = array(
-					'map_user_id'			=> $to['user_id'],
+				// Sub out the u_ prefix
+				$toString = substr ( $toString, 2 );
+				// Make it an int
+				$to = intval ( $toString );
+				$maps[$to] = array(
+					'map_user_id'			=> $to,
 					'map_is_starter'		=> 0,
 					'map_last_topic_reply'	=> $row['message_time']
 				);
+			}
+			
+			/* Now everyone else */
+			foreach( $this->db->select( '*', 'privmsgs_to', array( "msg_id=?", $row['msg_id'] ) ) AS $to )
+			{
+				if ( !array_key_exists( $to['user_id'],$maps ) )
+				{
+					$maps[$to['user_id']] = array(
+						'map_user_id'			=> $to['user_id'],
+						'map_is_starter'		=> 0,
+						'map_last_topic_reply'	=> $row['message_time']
+					);
+				}
 			}
 			
 			$libraryClass->convert_private_message( $topic, $posts, $maps );
