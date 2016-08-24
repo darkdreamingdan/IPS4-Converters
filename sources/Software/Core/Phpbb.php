@@ -354,7 +354,7 @@ INFORMATION;
 	 * @param 	string		BBCode UID
 	 * @return 	string		parsed post data
 	 **/	
-	public function strip_uid ( $post, $uid )
+	public static function strip_uid ( $post, $uid )
 	{
 		// PHPBB adds a 'uid' next to every BBCode open and close tag.  
 		// We need to strip this before we continue to get the real BBCode
@@ -645,7 +645,7 @@ INFORMATION;
 				'members_disable_pm'	=> ( $row['user_allow_pm'] ) ? 0 : 1,
 				'member_posts'			=> $row['user_posts'],
 				'member_last_post'		=> $row['user_lastpost_time'],
-				'signature'				=> $this->strip_uid ( $this->fixPostData($row['user_sig']), $row['user_sig_bbcode_uid'] )
+				'signature'				=> $this->fixPostData(  $this->strip_uid ($row['user_sig'], $row['user_sig_bbcode_uid']) )
 			);
 			
 			/* Profile Photos */
@@ -916,7 +916,7 @@ INFORMATION;
 			$posts[$row['msg_id']] = array(
 				'msg_id'			=> $row['msg_id'],
 				'msg_date'			=> $row['message_time'],
-				'msg_post'			=> $this->strip_uid ( $this->fixPostData($row['message_text']), $row['bbcode_uid'] ),
+				'msg_post'			=> $this->fixPostData( $this->strip_uid ( $row['message_text'], $row['bbcode_uid'] ) ),
 				'msg_author_id'		=> $row['author_id'],
 				'msg_ip_address'	=> $row['author_ip'],
 			);
