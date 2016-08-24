@@ -371,6 +371,14 @@ INFORMATION;
 		$post = str_replace('][quote', ']
 [quote', $post);
 		$post = preg_replace("#\[quote=(.+)\]#", "[quote name=$1]", $post);
+		
+		// We need to adjust the size of [size=] tags, as they take different units: IPB: 1-8; PHPBB: 1-200
+		$post = preg_replace_callback(
+			'(\[size=(\d+)\])',
+			function($m) { 
+				return '[size=' . round(($m[1]/100) * 4) . ']';
+			},
+			$post);
 
 		// We also don't need [/*] - IP.Board can work out XHTML for itself!
 		$post = preg_replace("/\[\/\*\]/", '', $post);
