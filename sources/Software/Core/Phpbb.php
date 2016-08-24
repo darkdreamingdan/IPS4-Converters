@@ -899,7 +899,6 @@ INFORMATION;
 			$posts[$row['msg_id']] = array(
 				'msg_id'			=> $row['msg_id'],
 				'msg_date'			=> $row['message_time'],
-				'msg_post'			=> $row['message_text'],
 				'msg_post'			=> $this->fixPostData($row['message_text']), 
 				'msg_author_id'		=> $row['author_id'],
 				'msg_ip_address'	=> $row['author_ip'],
