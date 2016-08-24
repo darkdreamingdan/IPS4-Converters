@@ -346,6 +346,20 @@ INFORMATION;
 		
 		return array( "Search Index Rebuilding", "Caches Cleared", "Private Messages Rebuilding", "Signatures Rebuilding" );
 	}
+
+	/**
+	 * Clean PHPBB UIDs from BBcode
+	 *
+	 * @param 	string		raw post data
+	 * @param 	string		BBCode UID
+	 * @return 	string		parsed post data
+	 **/	
+	public function strip_uid ( $post, $uid )
+	{
+		// PHPBB adds a 'uid' next to every BBCode open and close tag.  
+		// We need to strip this before we continue to get the real BBCode
+		return str_replace(":".$uid."]","]",$post);
+	}
 	
 	/**
 	 * Fix post data
@@ -357,21 +371,23 @@ INFORMATION;
 	{
 		$post = nl2br($post);
 		$post = html_entity_decode($post, ENT_COMPAT | ENT_HTML401, "UTF-8");
-		// I have no idea what phpBB was thinking, but they like to hav e [code:randomstring] tags instead of proper BBCode...
-		// Oh, and just to spice things up, 'randomstring' can have a : in it
-		$post = preg_replace("#(\w+)://#", "\\1{~~}//", $post );
-		//$post = preg_replace("#\[(\w+?)=([^\]:]*):([^\]]*)\]#", "[$1=$2]", $post);
-		$post = preg_replace( "#\[([a-zA-Z-\*]+?)=([^\]:]*):([^\]]*)\]#", "[$1=$2]", $post );
-		$post = str_replace( '{~~}//', '://', $post );
-		//$post = preg_replace("#\[(\w+?):([^\]]*)\]#", "[$1]", $post); - \w is too restrictive - the code could have a dash in it, for example
-		$post = preg_replace( "#\[([a-zA-Z0-9-\*]+?):([^\]]*)\]#", "[$1]", $post );
-		$post = preg_replace( "#\[/([^\]:]*):([^\]]*)\]#"    , "[/$1]", $post );
-
+		
 		// We need to rework quotes a little (there's no standard on [quote]'s attributes)
 		$post = str_replace('][quote', ']
 [quote', $post);
-		$post = preg_replace("#\[quote=(.+)\]#", "[quote name=$1]", $post);
-		
+		// Find all quote names
+		$post = preg_replace_callback("/\[quote=&quot;(.+?)&quot;\]/im",
+			function($m)
+			{
+				$m[1] = str_replace("[","&#91", $m[1]);
+				$m[1] = str_replace("]","&#93", $m[1]);
+				$m[1] = str_replace("'","&#39;", $m[1]);
+				return '[quote name="' .$m[1]. '"]';
+			},
+			$post
+		);
+
+	
 		// We need to adjust the size of [size=] tags, as they take different units: IPB: 1-8; PHPBB: 1-200
 		$post = preg_replace_callback(
 			'(\[size=(\d+)\])',
@@ -629,7 +645,7 @@ INFORMATION;
 				'members_disable_pm'	=> ( $row['user_allow_pm'] ) ? 0 : 1,
 				'member_posts'			=> $row['user_posts'],
 				'member_last_post'		=> $row['user_lastpost_time'],
-				'signature'				=> $this->fixPostData($row['user_sig'])
+				'signature'				=> $this->strip_uid ( $this->fixPostData($row['user_sig']), $row['user_sig_bbcode_uid'] )
 			);
 			
 			/* Profile Photos */
@@ -900,7 +916,7 @@ INFORMATION;
 			$posts[$row['msg_id']] = array(
 				'msg_id'			=> $row['msg_id'],
 				'msg_date'			=> $row['message_time'],
-				'msg_post'			=> $this->fixPostData($row['message_text']), 
+				'msg_post'			=> $this->strip_uid ( $this->fixPostData($row['message_text']), $row['bbcode_uid'] ),
 				'msg_author_id'		=> $row['author_id'],
 				'msg_ip_address'	=> $row['author_ip'],
 			);

@@ -233,6 +233,18 @@ class _Phpbb extends \IPS\convert\Software
 	}
 	
 	/**
+	 * Clean PHPBB UIDs from BBcode
+	 *
+	 * @param 	string		raw post data
+	 * @param 	string		BBCode UID
+	 * @return 	string		parsed post data
+	 **/	
+	public function strip_uid ( $post, $uid )
+	{
+		return \IPS\convert\Software\Core\Phpbb::strip_uid( $post, $uid );
+	}
+	
+	/**
 	 * Fix post data
 	 *
 	 * @param 	string		raw post data
@@ -452,7 +464,7 @@ class _Phpbb extends \IPS\convert\Software
 			$info = array(
 				'pid'			=> $row['post_id'],
 				'topic_id'		=> $row['topic_id'],
-				'post'			=> $row['post_text'],
+				'post'			=> strip_uid( $row['post_text'], $row['bbcode_uid'] ),
 				'append_edit'	=> ( $row['post_edit_user'] ) ? 1 : 0,
 				'edit_time'		=> $row['post_edit_time'],
 				'author_id'		=> $row['poster_id'],
