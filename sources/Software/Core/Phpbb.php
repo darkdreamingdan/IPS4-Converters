@@ -376,12 +376,13 @@ INFORMATION;
 		$post = str_replace('][quote', ']
 [quote', $post);
 		// Find all quote names
-		$post = preg_replace_callback("/\[quote=&quot;(.+?)&quot;\]/im",
+		$post = preg_replace_callback('/\[quote="(.+?)"\]/im',
 			function($m)
 			{
-				$m[1] = str_replace("[","&#91", $m[1]);
-				$m[1] = str_replace("]","&#93", $m[1]);
-				$m[1] = str_replace("'","&#39;", $m[1]);
+				// Legacy parser doesn't support certain characters, so replace them with safe versions
+				$m[1] = str_replace("[","&#x2997;", $m[1]);
+				$m[1] = str_replace("]","&#x2998;", $m[1]);
+				$m[1] = str_replace("'","&#x2018;", $m[1]);
 				return '[quote name="' .$m[1]. '"]';
 			},
 			$post
