@@ -396,8 +396,10 @@ INFORMATION;
 			},
 			$post);
 
-		// We also don't need [/*] - IP.Board can work out XHTML for itself!
-		$post = preg_replace("/\[\/\*\]/", '', $post);
+		// We also don't need [/*] and other extra list markup - IP.Board can work out XHTML for itself!
+		$post = str_replace( array("[/*]","[/*:m]"),"",$post);
+		$post = str_replace( array("[/list:o]","[/list:u]"),"[/list]",$post);
+
 
 		// Oh, and we need to sort out emoticons
 		$post = preg_replace("/<!-- s(\S+?) --><img(?:[^<]+?)<!-- (?:\S+?) -->/", '$1', $post);
