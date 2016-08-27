@@ -383,6 +383,7 @@ INFORMATION;
 				$m[1] = str_replace("[","&#x2997;", $m[1]);
 				$m[1] = str_replace("]","&#x2998;", $m[1]);
 				$m[1] = str_replace("'","&#x2018;", $m[1]);
+				$m[1] = str_replace("\$","&#xff04;", $m[1]);
 				return '[quote name="' .$m[1]. '"]';
 			},
 			$post
