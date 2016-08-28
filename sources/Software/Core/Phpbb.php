@@ -649,7 +649,8 @@ INFORMATION;
 				'members_disable_pm'	=> ( $row['user_allow_pm'] ) ? 0 : 1,
 				'member_posts'			=> $row['user_posts'],
 				'member_last_post'		=> $row['user_lastpost_time'],
-				'signature'				=> $this->fixPostData(  $this->strip_uid ($row['user_sig'], $row['user_sig_bbcode_uid']) )
+				'signature'				=> $this->fixPostData(  $this->strip_uid ($row['user_sig'], $row['user_sig_bbcode_uid']) ),
+				'members_bitoptions'	=> ($row['user_options'] & 1 << 3) ? 65536 : 0, // Show signatures.  PHPBB: functions_convert.php (set_user_options), functions.php (phpbb_optionget); IPB: Member.php.
 			);
 			
 			/* Profile Photos */
