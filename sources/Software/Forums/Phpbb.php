@@ -279,6 +279,9 @@ class _Phpbb extends \IPS\convert\Software
 				'last_title'		=> $row['forum_last_post_subject'],
 				'queued_topics'		=> isset( $row['forum_topics_unapproved'] ) ? $row['forum_topics_unapproved'] : 0,
 				'queued_posts'		=> isset( $row['forum_posts_unapproved'] ) ? $row['forum_topics_unapproved'] : 0,
+				'sub_can_post'		=> ( $row['forum_type'] == 1 ) ? TRUE : FALSE,
+				'redirect_on'		=> ( $row['forum_type'] == 2 ) ? TRUE : FALSE,
+				'forum_redirect_url'=> ( $row['forum_type'] == 2 ) ? $row['forum_link'] : NULL,
 			);
 			
 			$libraryClass->convert_forums_forum( $info );
